@@ -128,7 +128,7 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 
 	/**
 	 * Register ServletContextAwareProcessor.
-	 * @see ServletContextAwareProcessor
+	 * @see ServletContextAwareProcessor#postProcessBeforeInitialization(Object, String)
 	 */
 	@Override
 	protected void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {

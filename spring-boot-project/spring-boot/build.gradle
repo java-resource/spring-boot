@@ -107,6 +107,7 @@ dependencies {
 		exclude group: "javax.annotation", module: "javax.annotation-api"
 		exclude group: "javax.xml.bind", module: "jaxb-api"
 	}
+	//compile group: 'org.springframework.boot', name: 'spring-boot-starter-undertow', version: '2.3.5.RELEASE'
 }
 
 compileKotlin {
