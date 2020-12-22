@@ -38,12 +38,11 @@ import org.springframework.boot.context.event.*;
 import org.springframework.boot.convert.ApplicationConversionService;
 import org.springframework.boot.testsupport.system.CapturedOutput;
 import org.springframework.boot.testsupport.system.OutputCaptureExtension;
-import org.springframework.boot.web.embedded.netty.NettyReactiveWebServerFactory;
-import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;
 import org.springframework.boot.web.reactive.context.AnnotationConfigReactiveWebApplicationContext;
 import org.springframework.boot.web.reactive.context.AnnotationConfigReactiveWebServerApplicationContext;
 import org.springframework.boot.web.reactive.context.ReactiveWebApplicationContext;
 import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
+import org.springframework.boot.web.reactive.server.ConfigurableReactiveWebServerFactory;
 import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebApplicationContext;
 import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
@@ -724,19 +723,9 @@ class SpringApplicationTests {
 		this.context = SpringApplication.run(ExampleWebConfig.class);
 		assertThat(this.context).isNotNull();
 		try {
-			java.net.URI uri = java.net.URI.create("http://localhost:8080");
-			java.awt.Desktop dp = java.awt.Desktop.getDesktop();
-			//判断系统桌面是否支持要执行的功能
-			if (dp.isSupported(java.awt.Desktop.Action.BROWSE)) {
-				//获取系统默认浏览器打开链接
-				dp.browse(uri);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		try {
+			Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler http://localhost:8080");
 			Thread.sleep(30_000);
-		} catch (InterruptedException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -745,6 +734,12 @@ class SpringApplicationTests {
 	void runComponents() {
 		this.context = SpringApplication.run(new Class<?>[]{ExampleWebConfig.class, Object.class}, new String[0]);
 		assertThat(this.context).isNotNull();
+		try {
+			Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler http://localhost:8080");
+			Thread.sleep(30_000);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Test
@@ -1283,8 +1278,9 @@ class SpringApplicationTests {
 
 		@Bean
 		ServletWebServerFactory webServer() {
-//			return new TomcatServletWebServerFactory(8080);
-			return new UndertowServletWebServerFactory(8080);
+			//return new org.springframework.boot.web.embedded.jetty.JettyServletWebServerFactory(8080);
+			return new org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory(8080);
+			//return new  org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory(8080);
 		}
 	}
 
@@ -1292,8 +1288,11 @@ class SpringApplicationTests {
 	static class ExampleReactiveWebConfig {
 
 		@Bean
-		NettyReactiveWebServerFactory webServerFactory() {
-			return new NettyReactiveWebServerFactory(0);
+		ConfigurableReactiveWebServerFactory webServerFactory() {
+			return new org.springframework.boot.web.embedded.jetty.JettyReactiveWebServerFactory(8080);
+			//return new org.springframework.boot.web.embedded.netty.NettyReactiveWebServerFactory(8080);
+			//return new org.springframework.boot.web.embedded.tomcat.TomcatReactiveWebServerFactory(8080);
+			//return new org.springframework.boot.web.embedded.undertow.UndertowReactiveWebServerFactory(8080);
 		}
 
 		@Bean
