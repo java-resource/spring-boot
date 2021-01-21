@@ -1,0 +1,1 @@
+gradle build -x test -x checkstyleMain -x checkstyleTest -x asciidoctor -x asciidoctorPdf -x generateEffectiveBom
