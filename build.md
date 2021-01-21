@@ -1,1 +1,1 @@
-gradle build -x test -x checkstyleMain -x checkstyleTest -x asciidoctor -x asciidoctorPdf -x generateEffectiveBom
+gradle build -x test -x intTest -x checkstyleMain -x zip-x checkstyleTest -x asciidoctor -x asciidoctorPdf -x generateEffectiveBom
